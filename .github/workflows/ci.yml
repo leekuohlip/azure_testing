@@ -78,7 +78,7 @@ jobs:
           NODE_ENV: "test"
           PORT: 5175
 
-          
+
       # --- Frontend Setup ---
       - name: 📦 Install Web Dependencies
         run: |
@@ -94,7 +94,7 @@ jobs:
       - name: 🧪 Run Full Stack Integration Tests
         run: |
           cd web
-          npx playwright test
+          npm run e2e
         env:
           VITE_API_TARGET: http://localhost:5175
 
