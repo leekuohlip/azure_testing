@@ -3,6 +3,7 @@ import cors from "cors";
 import { PrismaClient } from "@prisma/client";
 import "dotenv/config";
 import bcrypt from "bcrypt";
+import path from "path";
 import { 
   generateAccessToken, 
   generateRefreshToken, 
@@ -13,7 +14,14 @@ import {
 const app = express();
 app.use(cors());
 app.use(express.json());
+
 const prisma = new PrismaClient();
+
+// Only serve static files in production (not during development/testing)
+if (process.env.NODE_ENV === 'production') {
+  // Serve static files from the public directory (React build)
+  app.use(express.static(path.join(__dirname, '../public')));
+}
 
 app.get("/api/health", async (_, res) => {
   await prisma.$queryRaw`SELECT 1`;
@@ -322,6 +330,18 @@ app.get("/api/users", authMiddleware, async (req, res) => {
     }
   });
 });
+
+// Catch-all handler: serve React app for all non-API routes (production only)
+if (process.env.NODE_ENV === 'production') {
+  app.use((req, res, next) => {
+    // Skip API routes
+    if (req.path.startsWith('/api')) {
+      return next();
+    }
+    // Serve React app for all other routes
+    res.sendFile(path.join(__dirname, '../public/index.html'));
+  });
+}
 
 const PORT = Number(process.env.PORT || 5175);
 app.listen(PORT, () => console.log(`API on :${PORT}`));
