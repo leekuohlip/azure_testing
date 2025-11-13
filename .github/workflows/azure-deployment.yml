@@ -9,7 +9,7 @@ on:
   workflow_dispatch:
 
 env:
-  WEBAPP_NAME: "cicdp"
+  WEBAPP_NAME: "cicdKuohLip"
   NODE_VERSION: "20.x"
   API_DIR: "api"
   WEB_DIR: "web"
