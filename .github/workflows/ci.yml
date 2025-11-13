@@ -80,8 +80,8 @@ jobs:
 
       - name: ⏳ Wait for API to be ready
         run: |
-          echo "Waiting for API exhibits endpoint..."
-          npx wait-on http://localhost:5175/api -t 60000 || {
+          echo "Waiting for API endpoint..."
+          npx wait-on http://localhost:5175/api/loginpage -t 60000 || {
             echo "API health check failed. Debugging information:"
             echo "=== API Server Logs ==="
             cat api/api.log || echo "No API log file found"
