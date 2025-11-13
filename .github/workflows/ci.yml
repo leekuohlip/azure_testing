@@ -78,25 +78,6 @@ jobs:
           NODE_ENV: "test"
           PORT: 5175
 
-      - name: ⏳ Wait for API to be ready
-        run: |
-          echo "Waiting for API endpoint..."
-          npx wait-on http://localhost:5175/api/loginpage -t 60000 || {
-            echo "API health check failed. Debugging information:"
-            echo "=== API Server Logs ==="
-            cat api/api.log || echo "No API log file found"
-            echo "=== Process List ==="
-            ps aux | grep node || echo "No node processes found"
-            echo "=== Port Usage ==="
-            netstat -tlnp | grep 5175 || echo "Port 5175 not in use"
-            echo "=== Testing basic connectivity ==="
-            curl -v http://localhost:5175/ || echo "Server not responding at all"
-            echo "=== Testing API base path ==="
-            curl -v http://localhost:5175/api/ || echo "API base path not responding"
-            exit 1
-          }
-          echo "API server is ready!"
-
       # --- Frontend Setup ---
       - name: 📦 Install Web Dependencies
         run: |
