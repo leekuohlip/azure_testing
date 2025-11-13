@@ -52,17 +52,17 @@ jobs:
           cd api
           npx prisma migrate deploy
 
+      - name: 🔧 Build API (if needed)
+        run: |
+          cd api
+          npm run build
+
       - name: 🌱 Seed Test Database
         run: |
           cd api
           node dist/prisma/seed.js
         env:
           SEED_DISABLE: 0
-
-      - name: 🔧 Build API (if needed)
-        run: |
-          cd api
-          npm run build
 
       - name: 🚀 Start API Server
         run: |
